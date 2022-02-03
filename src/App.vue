@@ -1,28 +1,54 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <header class="d-flex justify-content-between align-items-center">
+      <h1 class="px-3">BOOLFLIX</h1>
+      <search-bar
+        class="px-3"
+        @search="searchMovies" />
+    </header>
+    <main-container :movies="movieList"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios'
+import SearchBar from './components/SearchBar.vue'
+import MainContainer from './components/MainContainer.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    SearchBar,
+    MainContainer
+  },
+  data() {
+    return {
+      movieList: []
+    }
+  },
+  methods: {
+    searchMovies(input) {
+      axios.get(`https://api.themoviedb.org/3/search/movie/?api_key=12b92aed85e20971f9d1ef915a4fd61d&query=${input}`).then((response) => {
+        this.movieList = response.data.results;
+        return this.movieList;
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import "./style/main.scss";
+
+  header {
+    background-color: #000000;
+    width: 100%;
+
+    h1 {
+      color: #c60000;
+
+    }
+  }
+
+  
 </style>
