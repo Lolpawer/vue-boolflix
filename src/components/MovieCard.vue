@@ -1,13 +1,23 @@
 <template>
     <div class="picture-card">
+        <img class="poster"
+        :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`"
+        alt="Poster not available" />
         <p>Titolo: <span>{{movie.title}}</span></p>
         <p>Titolo originale: <span>{{movie.original_title}}</span></p>
         <p>Lingua: 
             <img 
             :src="`/flags/${movie.original_language}.png`" 
-            :alt="` ${movie.original_language}`"/>
+            :alt="`${movie.original_language}`"/>
         </p>
-        <p>Voto: <span>{{movie.vote_average}}</span></p>
+        <p>Voto: 
+            <span class="star"
+            v-for="(star, index) in Math.round(movie.vote_average / 2)"
+            :key="index"
+            >
+            &#9733;
+            </span>
+        </p>
     </div>
 </template>
 
@@ -20,29 +30,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .picture-card {
-        margin: 0 10px;
-        min-width: 300px;
-        height: 400px;
-        background-color: #fff;
-        border: 2px solid #000;
-        overflow-y: auto;
-
-        p {
-            font-weight: bold;
-            padding: 10px 10px;
-            font-size: 13px;
-            color: #c60000;
-
-            span {
-                color: #000;
-            }
-
-            img {
-                width: 25px;
-                height: 19px;
-            }
-        }
-    }
-
+@import "@/style/cardstyle.scss";
 </style>
