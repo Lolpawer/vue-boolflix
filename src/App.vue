@@ -1,11 +1,7 @@
 <template>
   <div id="app">
-    <header class="d-flex justify-content-between align-items-center">
-      <h1 class="px-3">BOOLFLIX</h1>
-      <search-bar
-        class="px-3"
-        @search="searchContent" />
-    </header>
+    <header-box class="d-flex justify-content-between align-items-center"
+    @search="searchContent"  />
     <main-container 
     :movies="movieList"
     :series="tvList"/>
@@ -14,13 +10,13 @@
 
 <script>
 import axios from 'axios'
-import SearchBar from './components/SearchBar.vue'
+import HeaderBox from './components/HeaderBox.vue'
 import MainContainer from './components/MainContainer.vue'
 
 export default {
   name: 'App',
   components: {
-    SearchBar,
+    HeaderBox,
     MainContainer
   },
   data() {
@@ -49,22 +45,29 @@ export default {
       this.searchMovies(input);
       this.seachTV(input);
     },
+
+    searchPopularMovies() {
+      axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=12b92aed85e20971f9d1ef915a4fd61d`).then((response) => {
+        this.movieList = response.data.results;
+        return this.movieList;
+      })
+    },
+
+    searchPopularTv() {
+      axios.get(`https://api.themoviedb.org/3/tv/popular?api_key=12b92aed85e20971f9d1ef915a4fd61d`).then((response) => {
+        this.tvList = response.data.results;
+        return this.tvList;
+      })
+    },
+  },
+  mounted() {
+
+    this.searchPopularMovies();
+    this.searchPopularTv()
   }
 }
 </script>
 
 <style lang="scss">
   @import "./style/main.scss";
-
-  header {
-    background-color: #000000;
-    width: 100%;
-
-    h1 {
-      color: #c60000;
-
-    }
-  }
-
-  
 </style>
